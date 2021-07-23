@@ -1,4 +1,4 @@
-import Image from "./Image"
+import Picture from "./Picture"
 
 interface Urls {
     urls: string[]
@@ -9,7 +9,7 @@ const Column = ({ urls }: Urls) => {
         <div className="column">
             {urls.map((url, index) => {
                 return (
-                    <Image url={url} key={index} />
+                    <Picture url={url} key={index} />
                 )
             })}
         </div>

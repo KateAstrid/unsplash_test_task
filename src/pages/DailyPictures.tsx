@@ -5,14 +5,15 @@ import Column from "../components/Column"
 import InfiniteScroll from "react-infinite-scroll-component"
 import getPictures from "../utils/getPictures"
 import searchPictures from "../utils/searchPictures"
-interface Images {
+
+interface Pictures {
     pictures: string[]
     setPictures: (images: string[]) => void
     showedPictures: string
     text: string
 }
 
-const AllImages = ({ pictures, setPictures, showedPictures, text }: Images) => {
+const AllPictures = ({ pictures, setPictures, showedPictures, text }: Pictures) => {
     const [page, setPage] = useState<number>(2)
  
     const zeroLeft: string[] = pictures.filter((pic, index) => index % 3 === 0)
@@ -41,7 +42,7 @@ const AllImages = ({ pictures, setPictures, showedPictures, text }: Images) => {
             hasMore={true}
             loader={<h4>Loading...</h4>}
         > 
-            <div className="allImages">
+            <div className="allPictures">
                 <Column urls={zeroLeft} />
                 <Column urls={oneLeft} />
                 <Column urls={twoLeft} />
@@ -69,9 +70,9 @@ const DailyPictures = () => {
                 text={text}
                 setText={setText}
             />
-            <PageTitle title="Daily Pictures"/>
+            <PageTitle title={showedPictures === 'searchedPic' ? "Search" : "Daily Pictures"}/>
             {pictures.length > 0 
-                ? <AllImages 
+                ? <AllPictures 
                     pictures={pictures} 
                     setPictures={setPictures} 
                     showedPictures={showedPictures} 

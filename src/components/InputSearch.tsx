@@ -3,7 +3,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import searchPictures from '../utils/searchPictures'
 
 interface Input {
-    setPictures: (images: string[]) => void
+    setPictures: (pics: string[]) => void
     setShowedPictures: (pics: string) => void
     text: string
     setText: (text: string) => void
@@ -12,12 +12,14 @@ interface Input {
 const InputSearch = ({ setPictures, setShowedPictures, text, setText }: Input) => {
 
     const handleSearch = () => {
-        searchPictures(1, text).then(response => setPictures(response))
-        setShowedPictures('searchedPic')
+        if (text.trim().length !== 0) {
+            searchPictures(1, text).then(response => setPictures(response))
+            setShowedPictures('searchedPic')
+        }
     }
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
+        if (event.key === "Enter" && text.trim().length !== 0) {
             searchPictures(1, text).then(response => setPictures(response))
             setShowedPictures('searchedPic')
         }

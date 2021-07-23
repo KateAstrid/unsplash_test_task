@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-interface Image {
+interface Picture {
     urls: {
         small: string
     }
@@ -19,7 +19,7 @@ const getPictures = (page: number) => {
         .then(response => {
             const data = response.data
             const urls: string[] = []
-            data.map((image: Image) => urls.push(image.urls.small))
+            data.map((pic: Picture) => urls.push(pic.urls.small))
             return urls
         })
         .catch(error => {
