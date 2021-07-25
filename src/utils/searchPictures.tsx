@@ -1,10 +1,12 @@
 import axios from 'axios'
-
-interface Picture {
+import { PicData } from '../interfaces'
+interface PicResponse {
     urls: {
         small: string
     }
+    id: string
 }
+
 
 const searchPictures = (page: number, text: string) => {
     return(
@@ -17,10 +19,16 @@ const searchPictures = (page: number, text: string) => {
             },
         })
         .then(response => {
-            const data = response.data.results
-            const urls: string[] = []
-            data.map((image: Picture) => urls.push(image.urls.small))
-            return urls
+            const data: PicData[] = []
+            response.data.results.forEach((pic: PicResponse) => {
+                const picData = {
+                    url: pic.urls.small,
+                    id: pic.id,
+                }
+                data.push(picData)
+            })
+            return data
+
         })
         .catch(error => {
             console.error(error)

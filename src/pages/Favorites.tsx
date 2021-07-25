@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import InputSearch from "../components/InputSearch"
 import PageTitle from "../components/PageTitle"
 import InfiniteScroll from "react-infinite-scroll-component"
-import getPictures from "../utils/getPictures"
 import searchPictures from "../utils/searchPictures"
+import { getFavorites } from '../utils/goToFavorites'
 import AllColumns from '../components/Columns'
 import { PicData } from '../interfaces'
 
@@ -14,17 +14,10 @@ interface Pictures {
     text: string
 }
 
-
 const PicsContainer = ({ pictures, setPictures, showedPictures, text }: Pictures) => {
     const [page, setPage] = useState<number>(2)
 
     const fetchMoreData = () => {
-        if (showedPictures === 'dailyPic') {
-            getPictures(page).then(response => {
-                setPictures([ ...pictures, ...response ])
-                setPage(page + 1)
-            })
-        }
         if (showedPictures === 'searchedPic') {
             searchPictures(page, text).then(response => {
                 setPictures([ ...pictures, ...response ])
@@ -34,27 +27,27 @@ const PicsContainer = ({ pictures, setPictures, showedPictures, text }: Pictures
     }
 
     return (
-        <InfiniteScroll
-            dataLength={pictures.length}
-            next={fetchMoreData}
-            hasMore={true}
-            loader={<h4>Loading...</h4>}
-        > 
-            <AllColumns pictures={pictures} />
-        </InfiniteScroll>
+        <React.Fragment>
+            {showedPictures === 'searchedPic'
+                ? <InfiniteScroll
+                    dataLength={pictures.length}
+                    next={fetchMoreData}
+                    hasMore={true}
+                    loader={<h4>Loading...</h4>}
+                > 
+                    <AllColumns pictures={pictures} />
+                </InfiniteScroll>
+
+                : <AllColumns pictures={pictures} />
+            }
+        </React.Fragment>
     )
 }
 
-const DailyPictures = () => {
-    const [pictures, setPictures] = useState<PicData[]>([])
+const Favorites = () => {
+    const [pictures, setPictures] = useState<PicData[]>(getFavorites())
     const [text, setText] = useState<string>('')
-    const [showedPictures, setShowedPictures] = useState<string>('dailyPic') 
-
-    useEffect(() => {
-        if (pictures.length === 0) {
-            getPictures(1).then(response => setPictures(response))
-        }
-    }, [])
+    const [showedPictures, setShowedPictures] = useState<string>('favorites') 
 
     return (
         <React.Fragment>
@@ -64,7 +57,7 @@ const DailyPictures = () => {
                 text={text}
                 setText={setText}
             />
-            <PageTitle title={showedPictures === 'searchedPic' ? "Search" : "Daily Pictures"}/>
+            <PageTitle title={showedPictures === 'searchedPic' ? "Search" : "Favorites"}/>
             {pictures.length > 0 
                 ? <PicsContainer 
                     pictures={pictures} 
@@ -78,4 +71,4 @@ const DailyPictures = () => {
     )
 }
 
-export default DailyPictures
+export default Favorites

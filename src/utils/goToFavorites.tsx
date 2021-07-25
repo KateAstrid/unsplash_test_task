@@ -1,15 +1,25 @@
-const goToFavorites = (url: string, like: boolean) => {
-    const unserialFavorites = localStorage.getItem('favorites')
-    const favorites: Array<string> = unserialFavorites ? JSON.parse(unserialFavorites) : []
+import { PicData } from "../interfaces"
 
-    if (like) {
-        favorites.push(url)
-    } else {
-        const index = favorites.indexOf(url);
-        favorites.splice(index, 1);
-    }
-    
-    localStorage.setItem('favorites', JSON.stringify(favorites))
+export const getFavorites = () => {
+    const unserialFavorites = localStorage.getItem('favorites')
+    const favorites: PicData[] = unserialFavorites ? JSON.parse(unserialFavorites) : []
+
+    return favorites
 }
 
-export default goToFavorites
+
+export const goToFavorites = (picture: PicData, like: boolean) => {
+    const favorites = getFavorites()
+    let newFavorites: PicData[] = [ ...favorites]
+
+    if (!like) {
+        newFavorites.push(picture)
+    } else {
+        newFavorites = newFavorites.filter(pic => pic.id !== picture.id)
+    }
+    
+    localStorage.setItem('favorites', JSON.stringify(newFavorites))
+}
+
+
+
