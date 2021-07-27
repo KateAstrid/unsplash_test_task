@@ -1,15 +1,16 @@
-import { useState } from 'react'
+import { useState, MouseEvent } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons'
 import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons'
 import { goToFavorites, getFavorites } from '../utils/goToFavorites'
-import { PicData } from '../interfaces'
+import { PicData } from '../utils/interfaces'
+import { useHistory } from "react-router-dom"
 
 interface Icon {
     like: boolean
-    onClick: () => void
+    onClick: (event: MouseEvent<HTMLDivElement> ) => void
 }
-interface Picture {
+interface Pic {
     picture: PicData
 }
 
@@ -20,29 +21,35 @@ const isLike = (picture: PicData) => {
 
 const IconHeart = ({ like, onClick }: Icon) => {
     return (
-        <div className="iconContainer" onClick={onClick}>
+        <div className="one-picture__icon" onClick={(event: MouseEvent<HTMLDivElement>) => onClick(event)}>
             {like
-                ? <FontAwesomeIcon className="iconHeart" icon={solidHeart} />
-                : <FontAwesomeIcon className="iconHeart" icon={regularHeart} />
+                ? <FontAwesomeIcon className="one-picture__icon--heart" icon={solidHeart} />
+                : <FontAwesomeIcon className="one-picture__icon--heart" icon={regularHeart} />
             }
         </div>
     )
 }
 
-const Picture = ({ picture }: Picture) => {
+const Picture = ({ picture }: Pic) => {
     const [like, setLike] = useState(isLike(picture))
+    let history = useHistory()
 
-    const handleClick = () => {
+    const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+        event.stopPropagation()
         setLike(!like)
         goToFavorites(picture, like)
     }
 
+    const goToDetails = () => {
+        history.push(`/details/${picture.id}`)
+    }
+
     return (
-        <div className="pictureContainer">
-            <img src={picture.url} alt="here is the pic" className="picture" />
-            <IconHeart like={like} onClick={handleClick}/>
+        <div className="one-picture" onClick={() => goToDetails()}>
+            <img src={picture.url} alt="here is the pic" className="one-picture__image" />
+            <IconHeart like={like} onClick={(event: MouseEvent<HTMLDivElement>) => handleClick(event)}/>
         </div>
     )
 }
 
-export default Picture
+export default Picture 

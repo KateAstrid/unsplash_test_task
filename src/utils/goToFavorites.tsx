@@ -1,4 +1,4 @@
-import { PicData } from "../interfaces"
+import { PicData } from "./interfaces"
 
 export const getFavorites = () => {
     const unserialFavorites = localStorage.getItem('favorites')
@@ -7,15 +7,14 @@ export const getFavorites = () => {
     return favorites
 }
 
-
 export const goToFavorites = (picture: PicData, like: boolean) => {
     const favorites = getFavorites()
     let newFavorites: PicData[] = [ ...favorites]
 
-    if (!like) {
-        newFavorites.push(picture)
-    } else {
+    if (like) {
         newFavorites = newFavorites.filter(pic => pic.id !== picture.id)
+    } else {
+        newFavorites.push(picture)
     }
     
     localStorage.setItem('favorites', JSON.stringify(newFavorites))

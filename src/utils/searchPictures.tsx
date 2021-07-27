@@ -1,12 +1,12 @@
 import axios from 'axios'
-import { PicData } from '../interfaces'
+import { PicData } from './interfaces'
+
 interface PicResponse {
     urls: {
         small: string
     }
     id: string
 }
-
 
 const searchPictures = (page: number, text: string) => {
     return(

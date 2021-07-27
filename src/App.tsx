@@ -1,22 +1,20 @@
-import { useState } from 'react';
-import DailyPictures from './pages/DailyPictures';
+import DailyPictures from './pages/DailyPictures'
 import Footer from './components/Footer'
-import Favorites from './pages/Favorites';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Favorites from './pages/Favorites'
+import Details from './pages/Details'
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import './App.css'
 
-const getPage = () => localStorage.getItem('page') ?? 'home'
-
 const App = () => {
-    const [page, setPage] = useState<string>(getPage())
     return (
         <Router>
-            <div className="App">
+            <div className="app">
                 <Switch>
                     <Route exact path="/home"><DailyPictures /></Route>
                     <Route exact path="/favorites"><Favorites /></Route>
+                    <Route exact path ="/details/:id"><Details /></Route>
                 </Switch>
-                <Footer page={page} setPage={setPage} />
+                <Footer />
             </div>
         </Router>
     )

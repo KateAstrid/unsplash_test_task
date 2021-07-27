@@ -1,16 +1,33 @@
 import OneColumn from "./OneColumn"
-import { PicData, ArrayPicData } from '../interfaces'
+import { PicData, ArrayPicData } from '../utils/interfaces'
+import useCurrentWidth from '../utils/useCurrentWidth'
 
 const Columns = ({ pictures }: ArrayPicData) => {
-    const zeroLeft: PicData[] = pictures.filter((pic, index) => index % 3 === 0)
-    const oneLeft: PicData[] = pictures.filter((pic, index) => index % 3 === 1)
-    const twoLeft: PicData[] = pictures.filter((pic, index) => index % 3 === 2)
+    const columns = useCurrentWidth() > 600 ? 3 : 2
+    
+    let zeroLeft: PicData[] = []
+    let oneLeft: PicData[] = []
+    let twoLeft: PicData[] = []
 
+    if (columns === 2) {
+        zeroLeft = pictures.filter((pic, index) => index % 3 === 0)
+        oneLeft = pictures.filter((pic, index) => index % 3 === 1)
+    }
+
+    if (columns === 3) {
+        zeroLeft = pictures.filter((pic, index) => index % 3 === 0)
+        oneLeft = pictures.filter((pic, index) => index % 3 === 1)
+        twoLeft = pictures.filter((pic, index) => index % 3 === 2)
+    }
+    
     return (
-        <div className="allPictures">
+        <div className="page__columns">
             <OneColumn pictures={zeroLeft} />
             <OneColumn pictures={oneLeft} />
-            <OneColumn pictures={twoLeft} />
+            {columns === 3 
+                ? <OneColumn pictures={twoLeft} />
+                : ''
+            }
         </div>
     )
 }

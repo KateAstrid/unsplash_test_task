@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import searchPictures from '../utils/searchPictures'
-import { PicData } from '../interfaces'
+import { PicData } from '../utils/interfaces'
 
 interface Input {
     setPictures: (pics: PicData[]) => void
@@ -26,15 +26,15 @@ const InputSearch = ({ setPictures, setShowedPictures, text, setText }: Input) =
     }
 
     return (
-        <div className="inputContainer">
+        <div className="search">
             <input 
-                className="input" 
+                className="search__input" 
                 placeholder="Search Pictures" 
                 value={text} 
                 onChange={(event) => setText(event.target.value)}
                 onKeyDown={(event) => handleKeyDown(event)}
             />
-            <FontAwesomeIcon className="iconSearch" icon={faSearch} onClick={() => handleSearch()} />
+            <FontAwesomeIcon className="search__icon" icon={faSearch} onClick={() => handleSearch()} />
         </div>
     )
 }

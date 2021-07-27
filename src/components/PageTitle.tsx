@@ -4,7 +4,7 @@ interface Title {
 
 const PageTitle = ({ title }: Title ) => {
     return (
-        <div className="pageTitle">{ title }</div>
+        <div className="page__title">{ title }</div>
     )
 }
 

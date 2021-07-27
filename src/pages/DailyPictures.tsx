@@ -1,49 +1,9 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import InputSearch from "../components/InputSearch"
 import PageTitle from "../components/PageTitle"
-import InfiniteScroll from "react-infinite-scroll-component"
 import getPictures from "../utils/getPictures"
-import searchPictures from "../utils/searchPictures"
-import AllColumns from '../components/Columns'
-import { PicData } from '../interfaces'
-
-interface Pictures {
-    pictures: PicData[]
-    setPictures: (images: PicData[]) => void
-    showedPictures: string
-    text: string
-}
-
-
-const PicsContainer = ({ pictures, setPictures, showedPictures, text }: Pictures) => {
-    const [page, setPage] = useState<number>(2)
-
-    const fetchMoreData = () => {
-        if (showedPictures === 'dailyPic') {
-            getPictures(page).then(response => {
-                setPictures([ ...pictures, ...response ])
-                setPage(page + 1)
-            })
-        }
-        if (showedPictures === 'searchedPic') {
-            searchPictures(page, text).then(response => {
-                setPictures([ ...pictures, ...response ])
-                setPage(page + 1)
-            })
-        }
-    }
-
-    return (
-        <InfiniteScroll
-            dataLength={pictures.length}
-            next={fetchMoreData}
-            hasMore={true}
-            loader={<h4>Loading...</h4>}
-        > 
-            <AllColumns pictures={pictures} />
-        </InfiniteScroll>
-    )
-}
+import { PicData } from '../utils/interfaces'
+import PicsContainer from "../components/PicsContainer"
 
 const DailyPictures = () => {
     const [pictures, setPictures] = useState<PicData[]>([])
@@ -54,10 +14,10 @@ const DailyPictures = () => {
         if (pictures.length === 0) {
             getPictures(1).then(response => setPictures(response))
         }
-    }, [])
+    })
 
     return (
-        <React.Fragment>
+        <div className="page">
             <InputSearch 
                 setPictures={setPictures} 
                 setShowedPictures={setShowedPictures} 
@@ -74,7 +34,7 @@ const DailyPictures = () => {
                 /> 
                 : ''
             }
-        </React.Fragment>
+        </div>
     )
 }
 
