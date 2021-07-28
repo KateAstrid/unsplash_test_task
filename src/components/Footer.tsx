@@ -15,15 +15,15 @@ const Footer = () => {
         <div className="footer">
             <div className="footer__section" onClick={() => handleClick('/home')}>
                 {location === 'home'
-                    ? <FontAwesomeIcon icon={solidUser} />
-                    : <FontAwesomeIcon icon={regularUser} />
+                    ? <FontAwesomeIcon icon={solidUser} className="footer__icon" />
+                    : <FontAwesomeIcon icon={regularUser} className="footer__icon" />
                 }
                 <div className="footer__text">Home</div>
             </div>
             <div className="footer__section" onClick={() => handleClick('/favorites')}>
                 {location === 'favorites'
-                    ? <FontAwesomeIcon icon={solidHeart} />
-                    : <FontAwesomeIcon icon={regularHeart} />
+                    ? <FontAwesomeIcon icon={solidHeart} className="footer__icon" />
+                    : <FontAwesomeIcon icon={regularHeart} className="footer__icon" />
                 }
                 <div className="footer__text">Favorites</div>
             </div>
